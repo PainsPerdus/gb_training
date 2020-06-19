@@ -160,12 +160,18 @@ clspr:			; while b != 0
 ;	ld (RacketRY),a
 ; BALL POS
 	ld a,$80
-	ld (BallX),a
 	ld (BallY),a
+
+	ld a, 9
+	ld (BallX),a
+
 ; BALL SPEED
-	ld a,0
-	ld (SpeedX),a
+	ld a, 1
+	ld (SpeedX), a
+
+	ld a, 2
 	ld (SpeedY),a
+
 ; \\\ init variables ///
 
 ; /// init color palettes \\\
@@ -197,7 +203,55 @@ VBlank:
 	push af
 	push hl
 
+//Avancee de la boule
+//En abscisse
+ld a, (BallX)
+ld hl, SpeedX
+add (hl)
+ld (BallX), a
 
+//En ordonnee
+ld a, (BallY)
+ld hl, SpeedY
+add (hl)
+ld (BallY), a
+
+//Condition aux limites
+//Pour abscisse
+ld a, (BallX)
+cp 160
+jp nc, reverseSpeedX
+cp 8
+jp c, reverseSpeedX
+
+jp notReverseSpeedX
+
+reverseSpeedX:
+	call lowbeep
+	ld a, (SpeedX)
+	cpl
+	add 1
+	ld (SpeedX), a
+
+notReverseSpeedX:
+
+//Pour ordonnee
+ld a, (BallY)
+cp 152
+jp nc, reverseSpeedY
+cp 16
+jp c, reverseSpeedY
+
+jp notReverseSpeedY
+
+reverseSpeedY:
+	call lowbeep
+	ld a, (SpeedY)
+	cpl
+	add 1
+	ld (SpeedY), a
+
+notReverseSpeedY:
 
 ; ### YOUR CODE HERE
 ; ### THE BALL IS AUTOMATICALLY PLOTTED AT (BallX), (BallY)
