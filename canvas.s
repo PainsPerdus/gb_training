@@ -30,6 +30,7 @@
 	BallY DB    ; ...
 	SpeedX DB
 	SpeedY DB
+	Gravity DB
 .ENDE
 
 .ORG $0040 ; Write at the address $0040 (vblank interuption)
@@ -166,6 +167,9 @@ clspr:			; while b != 0
 	ld a,0
 	ld (SpeedX),a
 	ld (SpeedY),a
+; GRAVITY
+	ld a,$1
+	ld (Gravity),a
 ; \\\ init variables ///
 
 ; /// init color palettes \\\
@@ -200,6 +204,17 @@ VBlank:
 
 
 ; ### YOUR CODE HERE
+
+	ld a,(SpeedX)  ; put SpeedX value in accumulator
+	ld b,(Gravity) ; put Gravity value in b
+	sub b          ; decrease SpeedX
+	ld (SpeedX),a  
+
+	ld a, (BallX)
+	add (SpeedX)
+	ld (BallX), a
+
+
 ; ### THE BALL IS AUTOMATICALLY PLOTTED AT (BallX), (BallY)
 ; ### You can use the SpeedX and SpeedY variables.
 ; ### You can call the functions lowbeep and hibeep to make sound.
