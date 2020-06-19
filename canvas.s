@@ -206,7 +206,8 @@ VBlank:
 ; ### YOUR CODE HERE
 
 	ld a,(SpeedX)  ; put SpeedX value in accumulator
-	ld b,(Gravity) ; put Gravity value in b
+	ld hl,Gravity
+	ld b,(hl) ; put Gravity value in b
 	sub b          ; decrease SpeedX
 	ld (SpeedX),a  
 
