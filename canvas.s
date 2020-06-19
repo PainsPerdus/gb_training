@@ -195,9 +195,7 @@ loop:
 ; ///////// VBlank Interuption \\\\\\\\\
 VBlank:
 	push af
-	push hl
-
-
+	push hl    
 
 ; ### YOUR CODE HERE
 ; ### THE BALL IS AUTOMATICALLY PLOTTED AT (BallX), (BallY)
@@ -205,6 +203,17 @@ VBlank:
 ; ### You can call the functions lowbeep and hibeep to make sound.
 ; ### You can uncomment the section bellow to do stuff when the
 ; ### arrows are pressed.
+
+    ld a,(BallX)   ; add SpeedX to BallX
+    ld b,1
+    add b
+    ld (BallX),a
+
+    ld a,(BallY)   ; add SpeedY to BallY
+    ld b,1
+    add b
+    ld (BallY),a
+
 
 
 ; /// TEST ARROWS \\\
