@@ -232,7 +232,7 @@ VBlank:
 
 
 ; //// Update ball pos \\\\
-	ld hl,$FE10
+	ld hl,$FE00
 	ld a,(BallY)
 	ld (hl),a
 	inc l
