@@ -160,11 +160,11 @@ clspr:			; while b != 0
 ;	ld (RacketLY),a
 ;	ld (RacketRY),a
 ; BALL POS
-	ld a,$80
+	ld a,$50
 	ld (BallX),a
 	ld (BallY),a
 ; BALL SPEED
-	ld a,0
+	ld a, $3
 	ld (SpeedX),a
 	ld (SpeedY),a
 ; GRAVITY
@@ -205,15 +205,50 @@ VBlank:
 
 ; ### YOUR CODE HERE
 
-	ld a,(SpeedX)  ; put SpeedX value in accumulator
-	ld hl,Gravity
-	ld b,(hl) ; put Gravity value in b
-	sub b          ; decrease SpeedX
-	ld (SpeedX),a  
+
+		
+	//HORIZONTAL
+
+	ld a, (BallY)
+	cp 110
+	jp c, no_bounceY ; if result positif
+	ld a, (SpeedY) ; put SpeedY value in accumulator
+	sra a
+	cpl
+	ld (SpeedY),a 
+
+	no_bounceY:
+	ld a, (SpeedY) ; put SpeedY value in accumulator
+	ld hl, Gravity
+	ld b,(hl)      ; put Gravity value in b
+	add b          ; decrease SpeedY
+	ld (SpeedY),a 
+ 
+	ld a, (BallY)
+	ld hl, SpeedY
+	add (hl)
+	ld (BallY), a
+
+	//VERTICAL
 
 	ld a, (BallX)
-	add (SpeedX)
+	cp 50
+	jp c, no_bounceX
+
+	cp 160
+	jp c, no_bounceX
+	ld a, (SpeedX) ; put SpeedX value in accumulator
+	cpl
+	inc a
+	ld (SpeedX),a 
+
+	no_bounceX:
+ 
+	ld a, (BallX)
+	ld hl, SpeedX
+	add (hl)
 	ld (BallX), a
+
 
 
 ; ### THE BALL IS AUTOMATICALLY PLOTTED AT (BallX), (BallY)
@@ -248,7 +283,7 @@ VBlank:
 
 
 ; //// Update ball pos \\\\
-	ld hl,$FE10
+	ld hl,$FE00
 	ld a,(BallY)
 	ld (hl),a
 	inc l
