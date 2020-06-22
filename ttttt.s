@@ -380,8 +380,8 @@ nopaddle:
   inc    l
   ld     a,(BalleX)
   ld     (hl),a                 ;OAM balle X
-  
-                                ;OAM score
+
+                        
   
   
 
